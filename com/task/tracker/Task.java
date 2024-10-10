@@ -4,17 +4,36 @@ package com.task.tracker;
 
 import java.time.LocalDateTime;
 
+enum Status {
+    PENDING, IN_PROGRESS, COMPLETED
+}
+
 public class Task {
     private int id;
     private String description;
-    private String status;
+    private Status status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
     public Task(int id, String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
-        this.status = status;
+        
+        switch (status) {
+            case "pending":
+                this.status = Status.PENDING;
+                break;
+            case "in_progress":
+                this.status = Status.IN_PROGRESS;
+                break;
+            case "completed":
+                this.status = Status.COMPLETED;
+                break;
+            default:
+                this.status = Status.PENDING;
+                break;
+        }
+
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -36,11 +55,24 @@ public class Task {
     }
 
     public String getStatus() {
-        return status;
+        return status.toString();
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        switch (status) {
+            case "pending":
+                this.status = Status.PENDING;
+                break;
+            case "in_progress":
+                this.status = Status.IN_PROGRESS;
+                break;
+            case "completed":
+                this.status = Status.COMPLETED;
+                break;
+            default:
+                this.status = Status.PENDING;
+                break;
+        }
     }
 
     public LocalDateTime getCreatedAt() {
