@@ -9,14 +9,13 @@ enum Status {
 }
 
 public class Task {
-    private int id;
+    private static int id = 0;
     private String description;
     private Status status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
-    public Task(int id, String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public Task(String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.description = description;
         
         switch (status) {
@@ -40,10 +39,6 @@ public class Task {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getDescription() {
@@ -93,7 +88,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task [id=" + id + ", description=" + description + ", status=" + status + ", createdAt=" + createdAt
-                + ", updatedAt=" + updatedAt + "]";
+        return "Task [id=" + id + ", description=" + description + ", status=" + status + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt + "]";
     }
 }
