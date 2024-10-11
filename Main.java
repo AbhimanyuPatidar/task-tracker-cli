@@ -1,5 +1,7 @@
 // Main class to run the CLI Application
 
+import com.task.tracker.TaskService;
+
 public class Main {
     public static void main(String[] args) {
         System.out.println("Task Tracker Application running...");
@@ -23,9 +25,13 @@ public class Main {
             System.out.println("4. To list all tasks: java -cp . Main list");
             System.out.println("\tTo list tasks by status: java -cp . Main list <status>");
         } else {
-            System.out.println("Arguments provided: ");
-            for (String arg : args) {
-                System.out.println(arg);
+            TaskService taskService = new TaskService();
+            int status = taskService.execute(args);
+            
+            if (status == 0) {
+                System.out.println("Command failed to execute.");
+            } else {
+                System.out.println("Command executed successfully.");
             }
         }
     }
