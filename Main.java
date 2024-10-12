@@ -1,7 +1,8 @@
 // Main class to run the CLI Application
 
-import com.task.tracker.InvNumOfArgsException;
 import com.task.tracker.TaskService;
+import com.task.tracker.exceptions.InvNumOfArgsException;
+import com.task.tracker.exceptions.InvUseOfOptionException;
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +32,11 @@ public class Main {
             try {
                 taskService.execute(args);
             } catch (InvNumOfArgsException inoae) {
-                inoae.printStackTrace();
+                System.out.println(inoae.getMessage());
+            } catch (InvUseOfOptionException iuooe) {
+                System.out.println(iuooe.getMessage());
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
