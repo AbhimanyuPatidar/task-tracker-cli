@@ -71,6 +71,16 @@ public class TaskService {
         } else {
             throw new InvNumOfArgsException("Invalid number of arguments provided for 'delete' command.");
         }
+
+        // To list all tasks or by status
+        if (args[0].equalsIgnoreCase("list") && args.length == 1) {
+            listTasks();
+        } else if (args[0].equalsIgnoreCase("list") && args.length == 2) {
+            String status = args[1];
+            listTasksByStatus(status);
+        } else {
+            throw new InvNumOfArgsException("Invalid number of arguments provided for 'list' command.");
+        }
     }
 
     private int addTask(String description, String string) {
@@ -86,5 +96,15 @@ public class TaskService {
     private void deleteTask(int id) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'deleteTask'");
+    }
+
+    private void listTasks() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listTasks'");
+    }
+
+    private void listTasksByStatus(String status) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'listTasksByStatus'");
     }
 }
