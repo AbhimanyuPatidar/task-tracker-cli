@@ -42,11 +42,11 @@ public class TaskService {
             Integer id = Integer.parseInt(args[1]);
 
             if (args[2].charAt(0) == '-') {
-                if (args[2].charAt(1) == 'd') {
+                if (args[2].charAt(1) == 'd' || args[2].charAt(1) == 'D') {
                     // Updating description
                     String newDescription = args[3];
                     updateTask(id, newDescription, null);
-                } else if (args[2].charAt(1) == 's') {
+                } else if (args[2].charAt(1) == 's' || args[2].charAt(1) == 'S') {
                     // Updating status
                     String newStatus = args[3];
                     updateTask(id, null, newStatus);
@@ -63,6 +63,14 @@ public class TaskService {
         } else {
             throw new InvNumOfArgsException("Insufficient number of arguments provided for 'update' command.");
         }
+
+        // For 'delete' command
+        if (args[0].equalsIgnoreCase("delete") && args.length == 2) {
+            Integer id = Integer.parseInt(args[1]);
+            deleteTask(id);
+        } else {
+            throw new InvNumOfArgsException("Invalid number of arguments provided for 'delete' command.");
+        }
     }
 
     private int addTask(String description, String string) {
@@ -73,5 +81,10 @@ public class TaskService {
     private void updateTask(int id, String desciption, Object status) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'updateTask'");
+    }
+
+    private void deleteTask(int id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'deleteTask'");
     }
 }
