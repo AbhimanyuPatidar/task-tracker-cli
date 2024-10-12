@@ -1,6 +1,7 @@
 // Main class to run the CLI Application
 
 import com.task.tracker.TaskService;
+import com.task.tracker.exceptions.InvCmdPassedException;
 import com.task.tracker.exceptions.InvNumOfArgsException;
 import com.task.tracker.exceptions.InvUseOfOptionException;
 
@@ -35,6 +36,8 @@ public class Main {
                 System.out.println(inoae.getMessage());
             } catch (InvUseOfOptionException iuooe) {
                 System.out.println(iuooe.getMessage());
+            } catch (InvCmdPassedException icpe) {
+                System.out.println(icpe.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
             }
