@@ -1,7 +1,10 @@
+// Purpose: Handles the creation and management of the Tasks.json file.
+
 package com.task.tracker;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 public class JSONFileHandler {
     private String filePath = "data/Tasks.json";
@@ -42,5 +45,11 @@ public class JSONFileHandler {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public List<String> readFromFile() {
+        // TODO: Implement readFromFile method
+
+        return null;
     }
 }

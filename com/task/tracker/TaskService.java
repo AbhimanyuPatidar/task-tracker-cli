@@ -1,3 +1,5 @@
+// Purpose: This class will check for the arguments provided and call the respective method to add, update, delete or list tasks.
+
 package com.task.tracker;
 
 import java.io.IOException;
