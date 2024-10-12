@@ -3,3 +3,6 @@
 
 # Ignore data folder
 data/
+
+# Ignore test folder
+test/

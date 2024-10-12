@@ -2,8 +2,10 @@
 
 package com.task.tracker;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public class TaskManager {
     JSONFileHandler fileHandler = null;
@@ -30,14 +32,14 @@ public class TaskManager {
         throw new UnsupportedOperationException("Unimplemented method 'deleteTask'");
     }
 
-    public void listTasks() {
-        List<String> tasks = fileHandler.readFromFile();
+    public void listTasks() throws FileNotFoundException, IOException {
+        List<String> tasks = fileHandler.readEntireFile();
         
         if (tasks == null) {
             System.out.println("No tasks found.");
         } else {
-            fileParser.convertFromJSONToMap(tasks);
-            printAllTasks();
+            List<Map<String, String>> listOfTaskMaps = fileParser.convertFromJSONToMap(tasks);
+            printAllTasks(listOfTaskMaps);
         }
     }
 
@@ -46,8 +48,18 @@ public class TaskManager {
         throw new UnsupportedOperationException("Unimplemented method 'listTasksByStatus'");
     }
 
-    private void printAllTasks() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'printAllTasks'");
+    private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
+        System.out.println("Here are all the tasks:");
+
+        for (Map<String, String> taskMap : listOfTaskMaps) {
+            System.out.println("Task ID: " + taskMap.get("id"));
+            System.out.println("Description: " + taskMap.get("description"));
+            System.out.println("Status: " + taskMap.get("status"));
+            System.out.println("Created at: " + taskMap.get("createdAt"));
+
+            if (taskMap.containsKey("updatedAt")) {
+                System.out.println("Updated at: " + taskMap.get("updatedAt"));
+            }
+        }
     }
 }

@@ -3,7 +3,10 @@
 package com.task.tracker;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class JSONFileHandler {
@@ -47,9 +50,28 @@ public class JSONFileHandler {
         this.filePath = filePath;
     }
 
-    public List<String> readFromFile() {
-        // TODO: Implement readFromFile method
+    // Reads the entire file for listTasks() method
+    public List<String> readEntireFile() throws FileNotFoundException, IOException {
+        List<String> jsonStrings = new ArrayList<>();
+        StringBuilder content = new StringBuilder();
 
-        return null;
+        // Read the entire file content into a StringBuilder
+        FileReader reader = new FileReader(filePath);
+        int ch;
+        while ((ch = reader.read()) != -1) {
+            content.append((char) ch);
+        }
+
+        reader.close();
+
+        // Split the file content into individual JSON strings and add them to the list
+        String[] tasks = content.toString().split("\n");
+        for (String task : tasks) {
+            if (!task.trim().isEmpty()) {
+            jsonStrings.add(task.trim());
+            }
+        }
+
+        return jsonStrings;
     }
 }

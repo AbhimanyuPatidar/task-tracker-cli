@@ -2,6 +2,7 @@
 
 package com.task.tracker;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.task.tracker.exceptions.InvCmdPassedException;
@@ -24,7 +25,7 @@ public class TaskService {
     }
 
     // Will check for args and call the respective method
-    public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, IOException {
+    public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException {
         TaskManager taskManager = new TaskManager();
         
         if (!args[0].equalsIgnoreCase("add") && !args[0].equalsIgnoreCase("update") && !args[0].equalsIgnoreCase("delete") && !args[0].equalsIgnoreCase("list")) {
