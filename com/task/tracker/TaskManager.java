@@ -1,6 +1,15 @@
 package com.task.tracker;
 
+import java.io.IOException;
+
 public class TaskManager {
+    JSONFileHandler fileHandler = null;
+
+    public TaskManager() throws IOException {
+        System.out.println("TaskManager initialized...");
+        fileHandler = new JSONFileHandler();
+    }
+
     public void addTask(String description, String string) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'addTask'");
