@@ -1,5 +1,6 @@
 // Main class to run the CLI Application
 
+import com.task.tracker.InvNumOfArgsException;
 import com.task.tracker.TaskService;
 
 public class Main {
@@ -26,12 +27,11 @@ public class Main {
             System.out.println("\tTo list tasks by status: java -cp . Main list <status>");
         } else {
             TaskService taskService = new TaskService();
-            int status = taskService.execute(args);
-            
-            if (status == 0) {
-                System.out.println("Command failed to execute.");
-            } else {
-                System.out.println("Command executed successfully.");
+
+            try {
+                taskService.execute(args);
+            } catch (InvNumOfArgsException inoae) {
+                inoae.printStackTrace();
             }
         }
     }
