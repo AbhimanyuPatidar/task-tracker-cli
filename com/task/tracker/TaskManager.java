@@ -49,8 +49,6 @@ public class TaskManager {
             logger.info("List of task maps: " + listOfTaskMaps);
 
             printAllTasks(listOfTaskMaps);
-            // System.out.println("Here are all the tasks: ");
-            // System.out.println(listOfTaskMaps);
         }
     }
 
@@ -62,22 +60,17 @@ public class TaskManager {
     private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
         logger.info("Printing all tasks...");
         System.out.println("Here are all the tasks:");
+        System.out.println();
 
         for (Map<String, String> taskMap : listOfTaskMaps) {
-            // System.out.println("Task ID: " + taskMap.get("id"));
-            // System.out.println("Description: " + taskMap.get("description"));
-            // System.out.println("Status: " + taskMap.get("status"));
-            // System.out.println("Created at: " + taskMap.get("createdAt"));
-
-            // if (taskMap.containsKey("updatedAt")) {
-            //     System.out.println("Updated at: " + taskMap.get("updatedAt"));
-            // }
-
-            // logger.info("There is no updateAt field.");
-
             for (Map.Entry<String, String> entry : taskMap.entrySet()) {
+                System.out.println(entry.getKey());
                 System.out.println(entry.getKey() + ": " + entry.getValue());
             }
+
+            System.out.println();
         }
+
+        System.out.println("End of tasks.");
     }
 }
