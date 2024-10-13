@@ -8,12 +8,15 @@ import java.io.IOException;
 import com.task.tracker.exceptions.InvCmdPassedException;
 import com.task.tracker.exceptions.InvNumOfArgsException;
 import com.task.tracker.exceptions.InvUseOfOptionException;
+import java.util.logging.Logger;
 
 public class TaskService {
+    private static final Logger logger = Logger.getLogger(TaskService.class.getName());
+
     private String[] args;
 
     public TaskService() {
-        System.out.println("TaskService initialized...");
+        logger.info("TaskService initialized...");
     }
 
     public String[] getArgs() {
@@ -45,7 +48,9 @@ public class TaskService {
             } else {
                 throw new InvNumOfArgsException("Invalid number of arguments provided for 'add' command.");
             }
-        } else {
+        } 
+        
+        if (args[0].equalsIgnoreCase("add") && args.length == 1) {
             throw new InvNumOfArgsException("No additional arguments provided for 'add' command.");
         }
 
@@ -72,15 +77,19 @@ public class TaskService {
                 String newStatus = args[3];
                 taskManager.updateTask(id, newDescription, newStatus);
             }
-        } else {
-            throw new InvNumOfArgsException("Insufficient number of arguments provided for 'update' command.");
+        } 
+        
+        if (args[0].equalsIgnoreCase("update") && args.length != 4) {
+            throw new InvNumOfArgsException("Invalid number of arguments provided for 'update' command.");
         }
 
         // For 'delete' command
         if (args[0].equalsIgnoreCase("delete") && args.length == 2) {
             Integer id = Integer.parseInt(args[1]);
             taskManager.deleteTask(id);
-        } else {
+        } 
+        
+        if (args[0].equalsIgnoreCase("delete") && args.length != 2) {
             throw new InvNumOfArgsException("Invalid number of arguments provided for 'delete' command.");
         }
 
@@ -90,7 +99,9 @@ public class TaskService {
         } else if (args[0].equalsIgnoreCase("list") && args.length == 2) {
             String status = args[1];
             taskManager.listTasksByStatus(status);
-        } else {
+        } 
+        
+        if (args[0].equalsIgnoreCase("list") && args.length > 2) {
             throw new InvNumOfArgsException("Invalid number of arguments provided for 'list' command.");
         }
     }

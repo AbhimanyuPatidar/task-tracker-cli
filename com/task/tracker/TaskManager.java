@@ -6,13 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class TaskManager {
+    private static final Logger logger = Logger.getLogger(TaskManager.class.getName());
+
     JSONFileHandler fileHandler = null;
     JSONFileParser fileParser = null;
 
     public TaskManager() throws IOException {
-        System.out.println("TaskManager initialized...");
+        logger.info("TaskManager initialized...");
         fileHandler = new JSONFileHandler();
         fileParser = new JSONFileParser();
     }
@@ -33,13 +36,21 @@ public class TaskManager {
     }
 
     public void listTasks() throws FileNotFoundException, IOException {
-        List<String> tasks = fileHandler.readEntireFile();
+        logger.info("listTasks() executing...");
+        String content = fileHandler.readContent();
+        logger.info("Returned to listTasks() from readContent()...");
+        logger.info("Content: " + content);
         
-        if (tasks == null) {
+        if (content.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
-            List<Map<String, String>> listOfTaskMaps = fileParser.convertFromJSONToMap(tasks);
+            List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
+            logger.info("Returned to listTasks() from convertJSONArrayToMaps()...");
+            logger.info("List of task maps: " + listOfTaskMaps);
+
             printAllTasks(listOfTaskMaps);
+            // System.out.println("Here are all the tasks: ");
+            // System.out.println(listOfTaskMaps);
         }
     }
 
@@ -49,16 +60,23 @@ public class TaskManager {
     }
 
     private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
+        logger.info("Printing all tasks...");
         System.out.println("Here are all the tasks:");
 
         for (Map<String, String> taskMap : listOfTaskMaps) {
-            System.out.println("Task ID: " + taskMap.get("id"));
-            System.out.println("Description: " + taskMap.get("description"));
-            System.out.println("Status: " + taskMap.get("status"));
-            System.out.println("Created at: " + taskMap.get("createdAt"));
+            // System.out.println("Task ID: " + taskMap.get("id"));
+            // System.out.println("Description: " + taskMap.get("description"));
+            // System.out.println("Status: " + taskMap.get("status"));
+            // System.out.println("Created at: " + taskMap.get("createdAt"));
 
-            if (taskMap.containsKey("updatedAt")) {
-                System.out.println("Updated at: " + taskMap.get("updatedAt"));
+            // if (taskMap.containsKey("updatedAt")) {
+            //     System.out.println("Updated at: " + taskMap.get("updatedAt"));
+            // }
+
+            // logger.info("There is no updateAt field.");
+
+            for (Map.Entry<String, String> entry : taskMap.entrySet()) {
+                System.out.println(entry.getKey() + ": " + entry.getValue());
             }
         }
     }

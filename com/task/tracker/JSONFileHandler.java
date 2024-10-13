@@ -6,14 +6,15 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.logging.Logger;
 
 public class JSONFileHandler {
+    private static final Logger logger = Logger.getLogger(JSONFileHandler.class.getName());
+    
     private String filePath = "data/Tasks.json";
 
     public JSONFileHandler() throws IOException {
-        System.out.println("JSONFileHandler initialized...");
+        logger.info("JSONFileHandler initialized...");
 
         // Create the data directory if it doesn't exist
         File dataDir = new File("data");
@@ -24,7 +25,7 @@ public class JSONFileHandler {
                 System.err.println("Failed to create data directory.");
             }
         } else {
-            System.out.println("Data directory already exists.");
+            logger.info("Data directory already exists.");
         }
 
         // Check if the Tasks.json file exists
@@ -38,7 +39,7 @@ public class JSONFileHandler {
                 throw new IOException("Failed to create Tasks.json file.");
             }
         } else {
-            System.out.println("Tasks.json file already exists.");
+            logger.info("Tasks.json file already exists.");
         }
     }
 
@@ -51,8 +52,9 @@ public class JSONFileHandler {
     }
 
     // Reads the entire file for listTasks() method
-    public List<String> readEntireFile() throws FileNotFoundException, IOException {
-        List<String> jsonStrings = new ArrayList<>();
+    public String readContent() throws FileNotFoundException, IOException {
+        logger.info("Reading entire file...");
+        
         StringBuilder content = new StringBuilder();
 
         // Read the entire file content into a StringBuilder
@@ -64,14 +66,6 @@ public class JSONFileHandler {
 
         reader.close();
 
-        // Split the file content into individual JSON strings and add them to the list
-        String[] tasks = content.toString().split("\n");
-        for (String task : tasks) {
-            if (!task.trim().isEmpty()) {
-            jsonStrings.add(task.trim());
-            }
-        }
-
-        return jsonStrings;
+        return content.toString();
     }
 }
