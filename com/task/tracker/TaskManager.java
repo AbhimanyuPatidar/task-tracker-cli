@@ -63,9 +63,15 @@ public class TaskManager {
         System.out.println();
 
         for (Map<String, String> taskMap : listOfTaskMaps) {
-            for (Map.Entry<String, String> entry : taskMap.entrySet()) {
-                System.out.println(entry.getKey());
-                System.out.println(entry.getKey() + ": " + entry.getValue());
+            System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
+            System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
+            System.out.println("Status: " + '\"' + taskMap.get("status") + '\"');
+            System.out.println("CreatedAt: " + '\"' + taskMap.get("createdAt") + '\"');
+
+            if (taskMap.containsKey("updatedAt")) {
+                System.out.println("UpdatedAt: " + '\"' + taskMap.get("updatedAt") + '\"');
+            } else {
+                logger.info("No updatedAt key found in taskMap.");
             }
 
             System.out.println();
