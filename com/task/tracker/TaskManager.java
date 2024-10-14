@@ -37,6 +37,7 @@ public class TaskManager {
 
     public void listTasks() throws FileNotFoundException, IOException {
         logger.info("listTasks() executing...");
+
         String content = fileHandler.readContent();
         logger.info("Returned to listTasks() from readContent()...");
         logger.info("Content: " + content);
@@ -52,9 +53,22 @@ public class TaskManager {
         }
     }
 
-    public void listTasksByStatus(String status) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'listTasksByStatus'");
+    public void listTasksByStatus(String status) throws FileNotFoundException, IOException {
+        logger.info("listTasksByStatus() executing...");
+
+        String content = fileHandler.readContent();
+        logger.info("Returned to listTasksByStatus() from readContent()...");
+        logger.info("Content: " + content);
+
+        if (content.isEmpty()) {
+            System.out.println("No tasks found.");
+        } else {
+            List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
+            logger.info("Returned to listTasksByStatus() from convertJSONArrayToMaps()...");
+            logger.info("List of task maps: " + listOfTaskMaps);
+
+            printTasksByStatus(listOfTaskMaps, status);
+        }
     }
 
     private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
@@ -78,5 +92,30 @@ public class TaskManager {
         }
 
         System.out.println("End of tasks.");
+    }
+
+    private void printTasksByStatus(List<Map<String, String>> listOfTaskMaps, String status) {
+        logger.info("Printing tasks by status...");
+        System.out.println("Here are all the tasks with status: " + status);
+        System.out.println();
+
+        for (Map<String, String> taskMap : listOfTaskMaps) {
+            if (taskMap.get("status").equalsIgnoreCase(status)) {
+                System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
+                System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
+                System.out.println("Status: " + '\"' + taskMap.get("status") + '\"');
+                System.out.println("CreatedAt: " + '\"' + taskMap.get("createdAt") + '\"');
+
+                if (taskMap.containsKey("updatedAt")) {
+                    System.out.println("UpdatedAt: " + '\"' + taskMap.get("updatedAt") + '\"');
+                } else {
+                    logger.info("No updatedAt key found in taskMap.");
+                }
+
+                System.out.println();
+            }
+        }
+
+        System.out.println("End of tasks with status: " + status);
     }
 }
