@@ -67,6 +67,8 @@ public class JSONFileHandler {
 
         reader.close();
 
+        logger.info("Content: " + content.toString());
+
         return content.toString();
     }
 

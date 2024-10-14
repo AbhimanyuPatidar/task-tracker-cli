@@ -78,16 +78,16 @@ public class JSONFileParser {
         Map<String, String> taskMap = new HashMap<>();
 
         // Formatting Date and Time
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        LocalDateTime createdAt = LocalDateTime.parse(LocalDateTime.now().format(formatter));
-
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
+        LocalDateTime createdAt = LocalDateTime.now();
+        
         Task task = new Task(description, status, createdAt, null);
 
         // Adding task to map
         taskMap.put("id", String.valueOf(task.getId()));
         taskMap.put("description", task.getDescription());
         taskMap.put("status", task.getStatus().toLowerCase());
-        taskMap.put("createdAt", task.getCreatedAt().toString());
+        taskMap.put("createdAt", task.getCreatedAt().format(formatter));
 
         if (task.getUpdatedAt() != null) {
             taskMap.put("updatedAt", task.getUpdatedAt().toString());
@@ -121,6 +121,8 @@ public class JSONFileParser {
             jsonObject.append(c);
 
             if (braceCount == 0 && jsonObject.length() > 0) {
+                logger.info("JSON Object: " + jsonObject);
+                logger.info("JSON Object: " + jsonObject.toString().trim());
                 Map<String, String> task = convertJSONObjectToMap(jsonObject.toString().trim());
                 logger.info("Task: " + task);
                 listOfTaskMaps.add(task);
@@ -143,6 +145,7 @@ public class JSONFileParser {
 
         // Split the JSON object into key-value pairs
         String[] keyValuePairs = jsonObject.split(",");
+
         for (String pair : keyValuePairs) {
             String[] keyValue = pair.split(":");
 
@@ -153,6 +156,8 @@ public class JSONFileParser {
             
             String key = keyValue[0].trim();
             String value = keyValue[1].trim();
+
+            logger.info("Key: " + key + ", Value: " + value);
 
             // Modify key and value so they don't contain quotes, if present
             logger.info("Removing quotes from key and value, if present...");
@@ -171,6 +176,8 @@ public class JSONFileParser {
             if (value.endsWith("\"")) {
                 value = value.substring(0, value.length() -1);
             }
+
+            logger.info("Key: " + key + ", Value: " + value);
 
             task.put(key, value);
         }

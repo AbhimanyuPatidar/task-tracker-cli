@@ -59,7 +59,7 @@ public class TaskManager {
                     }
 
                     // Formatting Date and Time
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
                     String updatedAt = LocalDateTime.now().format(formatter);
 
                     taskMap.put("updatedAt", updatedAt);
