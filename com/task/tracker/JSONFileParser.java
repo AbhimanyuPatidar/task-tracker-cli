@@ -2,6 +2,7 @@
 
 package com.task.tracker;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,10 +48,6 @@ public class JSONFileParser {
         for (Map<String, String> task : listOfTaskMaps) {
             jsonArray.append("{");
 
-            // for (Map.Entry<String, String> entry : task.entrySet()) {
-            //     jsonArray.append("\"" + entry.getKey() + "\":\"" + entry.getValue() + "\",");
-            // }
-
             jsonArray.append("\"id\":\"" + task.get("id") + "\",");
             jsonArray.append("\"description\":\"" + task.get("description") + "\",");
             jsonArray.append("\"status\":\"" + task.get("status") + "\",");
@@ -60,15 +57,44 @@ public class JSONFileParser {
                 jsonArray.append("\"updatedAt\":\"" + task.get("updatedAt") + "\"");
             }
 
+            jsonArray.deleteCharAt(jsonArray.length() - 1); // Remove the last comma
             jsonArray.append("},");
         }
 
-        jsonArray.deleteCharAt(jsonArray.length() - 1);
+        jsonArray.deleteCharAt(jsonArray.length() - 1); // Remove the last comma
         jsonArray.append("]");
 
         logger.info("JSON Array: " + jsonArray);
 
         return jsonArray.toString();
+    }
+
+    public String createContent(String description, String status) {
+        logger.info("Creating content...");
+
+        // Creating list of map instead of map to reuse convertMapsToJSONArray method
+        List<Map<String, String>> listOfTaskMaps = new ArrayList<>();
+        Map<String, String> taskMap = new HashMap<>();
+
+        // Preparing date for Task constructor
+        LocalDateTime createdAt = LocalDateTime.now();
+
+        Task task = new Task(description, status, createdAt, null);
+
+        // Adding task to map
+        taskMap.put("id", String.valueOf(task.getId()));
+        taskMap.put("description", task.getDescription());
+        taskMap.put("status", task.getStatus().toLowerCase());
+        taskMap.put("createdAt", task.getCreatedAt().toString());
+
+        if (task.getUpdatedAt() != null) {
+            taskMap.put("updatedAt", task.getUpdatedAt().toString());
+        }
+
+        listOfTaskMaps.add(taskMap);
+
+        // calling convertMapsToJSONArray to convert list of map to JSON Array (content)
+        return convertMapsToJSONArray(listOfTaskMaps);
     }
 
     private List<Map<String, String>> splitIntoJSONObjects(String content) {

@@ -16,9 +16,10 @@ public class Task {
     private LocalDateTime updatedAt;
     
     public Task(String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        id++;
         this.description = description;
         
-        switch (status) {
+        switch (status.toLowerCase()) {
             case "pending":
                 this.status = Status.PENDING;
                 break;

@@ -20,9 +20,10 @@ public class TaskManager {
         fileParser = new JSONFileParser();
     }
 
-    public void addTask(String description, String string) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addTask'");
+    public void addTask(String description, String string) throws IOException {
+        logger.info("addTask() executing...");
+
+        fileHandler.writeContent(fileParser.createContent(description, string));
     }
 
     public void updateTask(int id, String desciption, Object status) {
