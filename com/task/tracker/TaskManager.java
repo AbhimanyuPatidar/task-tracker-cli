@@ -5,6 +5,7 @@ package com.task.tracker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
@@ -162,10 +163,13 @@ public class TaskManager {
             System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
             System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
             System.out.println("Status: " + '\"' + taskMap.get("status") + '\"');
-            System.out.println("CreatedAt: " + '\"' + taskMap.get("createdAt") + '\"');
+            
+            String createdAt = format(taskMap.get("createdAt"));
+            System.out.println("CreatedAt: " + '\"' + createdAt + '\"');
 
             if (taskMap.containsKey("updatedAt")) {
-                System.out.println("UpdatedAt: " + '\"' + taskMap.get("updatedAt") + '\"');
+                String updatedAt = format(taskMap.get("updatedAt"));
+                System.out.println("UpdatedAt: " + '\"' + updatedAt + '\"');
             } else {
                 logger.info("No updatedAt key found in taskMap.");
             }
@@ -186,10 +190,13 @@ public class TaskManager {
                 System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
                 System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
                 System.out.println("Status: " + '\"' + taskMap.get("status") + '\"');
-                System.out.println("CreatedAt: " + '\"' + taskMap.get("createdAt") + '\"');
+
+                String createdAt = format(taskMap.get("createdAt"));
+                System.out.println("CreatedAt: " + '\"' + createdAt + '\"');
 
                 if (taskMap.containsKey("updatedAt")) {
-                    System.out.println("UpdatedAt: " + '\"' + taskMap.get("updatedAt") + '\"');
+                    String updatedAt = format(taskMap.get("updatedAt"));
+                    System.out.println("UpdatedAt: " + '\"' + updatedAt + '\"');
                 } else {
                     logger.info("No updatedAt key found in taskMap.");
                 }
@@ -199,5 +206,42 @@ public class TaskManager {
         }
 
         System.out.println("End of tasks with status: " + status);
+    }
+
+    private String format(String dateTime) {
+        logger.info("Formatting date and time...");
+        String[] dateTimeArray = dateTime.split("_");
+
+        String[] dateArray = dateTimeArray[0].split("-");
+        String[] timeArray = dateTimeArray[1].split("-");
+
+        String year = dateArray[0];
+
+        String month = Month.of(Integer.parseInt(dateArray[1])).name();
+        month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
+
+        String day = dateArray[2];
+
+        String minutes = timeArray[1];
+        String seconds = timeArray[2];
+        
+        int hourInt = Integer.parseInt(timeArray[0]);
+        if (hourInt < 12) {
+            String hour = null;
+            if (hourInt == 0) {
+                hour = "12";
+            } else {
+                hour = Integer.toString(hourInt);
+            }
+
+            dateTime = "Date: " + day + " " + month + ", " + year + "; Time: " + hour + ":" + minutes + ":" + seconds + " am";
+        } else {
+            hourInt -= 12;
+            String hour = Integer.toString(hourInt);
+
+            dateTime = "Date: " + day + " " + month + ", " + year + "; Time: " + hour + ":" + minutes + ":" + seconds + " pm";
+        }
+
+        return dateTime;
     }
 }
