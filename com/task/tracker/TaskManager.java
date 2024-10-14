@@ -5,6 +5,7 @@ package com.task.tracker;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -57,7 +58,11 @@ public class TaskManager {
                         taskMap.put("status", status.toLowerCase());
                     }
 
-                    taskMap.put("updatedAt", LocalDateTime.now().toString());
+                    // Formatting Date and Time
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    String updatedAt = LocalDateTime.now().format(formatter);
+
+                    taskMap.put("updatedAt", updatedAt);
 
                     logger.info("TaskMap after updating: " + taskMap);
                     break;

@@ -3,6 +3,7 @@
 package com.task.tracker;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -76,8 +77,9 @@ public class JSONFileParser {
         List<Map<String, String>> listOfTaskMaps = new ArrayList<>();
         Map<String, String> taskMap = new HashMap<>();
 
-        // Preparing date for Task constructor
-        LocalDateTime createdAt = LocalDateTime.now();
+        // Formatting Date and Time
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime createdAt = LocalDateTime.parse(LocalDateTime.now().format(formatter));
 
         Task task = new Task(description, status, createdAt, null);
 
