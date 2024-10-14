@@ -5,6 +5,7 @@ package com.task.tracker;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -51,7 +52,7 @@ public class JSONFileHandler {
         this.filePath = filePath;
     }
 
-    // Reads the entire file for listTasks() method
+    // Reads the entire file for listTasks(), listTasksByStatus(), deleteTask() methods
     public String readContent() throws FileNotFoundException, IOException {
         logger.info("Reading entire file...");
         
@@ -67,5 +68,28 @@ public class JSONFileHandler {
         reader.close();
 
         return content.toString();
+    }
+
+    // Writes string into the file for deleteTask() method
+    public void writeContent(String content) throws IOException {
+        logger.info("Writing content to file...");
+        logger.info("Content: " + content);
+
+        if (content.length() == 0) {
+            System.out.println("No tasks to write.");
+            return;
+        } else if (content.length() == 2 && (content.charAt(0) == '[' && content.charAt(1) == ']')) {
+            FileWriter writer = new FileWriter(filePath);
+            logger.info("Deleting square brackets.");
+            writer.write("");
+            writer.close();
+            System.out.println("No tasks remaining!");
+        } else {
+            FileWriter writer = new FileWriter(filePath);
+            logger.info("Writing content");
+            writer.write(content);
+            writer.close();
+            System.out.println("Content updated in file.");
+        }
     }
 }

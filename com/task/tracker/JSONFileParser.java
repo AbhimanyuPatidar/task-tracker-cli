@@ -24,7 +24,7 @@ public class JSONFileParser {
         logger.info("Refined content: " + content);
 
         // Split the JSON array into individual JSON objects
-        List<Map<String, String>> tasks = splitIntoJSONObjects(content);
+        List<Map<String, String>> listOfTaskMaps = splitIntoJSONObjects(content);
         
         // logger.info("JSON objects: " + jsonObjects);
 
@@ -34,13 +34,47 @@ public class JSONFileParser {
         //     tasks.add(convertJSONObjectToMap(jsonObject));
         // }
 
-        return tasks;
+        return listOfTaskMaps;
+    }
+
+    // Converts a list of maps to a JSON array for writeContent() method
+    public String convertMapsToJSONArray(List<Map<String, String>> listOfTaskMaps) {
+        logger.info("Converting maps to JSON Array...");
+
+        StringBuilder jsonArray = new StringBuilder();
+        jsonArray.append("[");
+
+        for (Map<String, String> task : listOfTaskMaps) {
+            jsonArray.append("{");
+
+            // for (Map.Entry<String, String> entry : task.entrySet()) {
+            //     jsonArray.append("\"" + entry.getKey() + "\":\"" + entry.getValue() + "\",");
+            // }
+
+            jsonArray.append("\"id\":\"" + task.get("id") + "\",");
+            jsonArray.append("\"description\":\"" + task.get("description") + "\",");
+            jsonArray.append("\"status\":\"" + task.get("status") + "\",");
+            jsonArray.append("\"createdAt\":\"" + task.get("createdAt") + "\",");
+
+            if (task.containsKey("updatedAt")) {
+                jsonArray.append("\"updatedAt\":\"" + task.get("updatedAt") + "\"");
+            }
+
+            jsonArray.append("},");
+        }
+
+        jsonArray.deleteCharAt(jsonArray.length() - 1);
+        jsonArray.append("]");
+
+        logger.info("JSON Array: " + jsonArray);
+
+        return jsonArray.toString();
     }
 
     private List<Map<String, String>> splitIntoJSONObjects(String content) {
         logger.info("Splitting into JSON objects...");
 
-        List<Map<String, String>> tasks = new ArrayList<>();
+        List<Map<String, String>> listOfTaskMaps = new ArrayList<>();
 
         int braceCount = 0;
         StringBuilder jsonObject = new StringBuilder();
@@ -61,12 +95,12 @@ public class JSONFileParser {
             if (braceCount == 0 && jsonObject.length() > 0) {
                 Map<String, String> task = convertJSONObjectToMap(jsonObject.toString().trim());
                 logger.info("Task: " + task);
-                tasks.add(task);
+                listOfTaskMaps.add(task);
                 jsonObject.setLength(0);
             }
         }
 
-        return tasks;
+        return listOfTaskMaps;
     }
 
     private Map<String, String> convertJSONObjectToMap(String jsonObject) {

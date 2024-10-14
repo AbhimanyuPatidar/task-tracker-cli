@@ -30,9 +30,42 @@ public class TaskManager {
         throw new UnsupportedOperationException("Unimplemented method 'updateTask'");
     }
 
-    public void deleteTask(int id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteTask'");
+    public void deleteTask(int id) throws FileNotFoundException, IOException {
+        logger.info("deleteTask() executing...");
+
+        String content = fileHandler.readContent();
+        logger.info("Returned to deleteTask() from readContent()...");
+        logger.info("Content: " + content);
+
+        if (content.isEmpty()) {
+            System.out.println("No tasks found.");
+        } else {
+            List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
+            logger.info("Returned to deleteTask() from convertJSONArrayToMaps()...");
+            logger.info("List of task maps: " + listOfTaskMaps);
+
+            boolean taskFound = false;
+            for (Map<String, String> taskMap : listOfTaskMaps) {
+                if (Integer.parseInt(taskMap.get("id")) == id) {
+                    taskFound = true;
+                    if (taskFound) {
+                        logger.info("TaskMap: " + taskMap);
+                    }
+
+                    listOfTaskMaps.remove(taskMap);
+                    logger.info("List of task maps after deleting task: " + listOfTaskMaps);
+                    break;
+                }
+            }
+
+            if (taskFound) {
+                fileHandler.writeContent(fileParser.convertMapsToJSONArray(listOfTaskMaps));
+                logger.info("Returned to deleteTask() from writeContent()...");
+                System.out.println("Task with ID " + id + " deleted successfully.");
+            } else {
+                System.out.println("Task with ID " + id + " not found.");
+            }
+        }
     }
 
     public void listTasks() throws FileNotFoundException, IOException {
