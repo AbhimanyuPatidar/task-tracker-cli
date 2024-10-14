@@ -54,7 +54,7 @@ public class JSONFileParser {
             jsonArray.append("\"createdAt\":\"" + task.get("createdAt") + "\",");
 
             if (task.containsKey("updatedAt")) {
-                jsonArray.append("\"updatedAt\":\"" + task.get("updatedAt") + "\"");
+                jsonArray.append("\"updatedAt\":\"" + task.get("updatedAt") + "\",");
             }
 
             jsonArray.deleteCharAt(jsonArray.length() - 1); // Remove the last comma

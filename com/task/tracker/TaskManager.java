@@ -4,6 +4,7 @@ package com.task.tracker;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -26,9 +27,51 @@ public class TaskManager {
         fileHandler.writeContent(fileParser.createContent(description, string));
     }
 
-    public void updateTask(int id, String desciption, Object status) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateTask'");
+    public void updateTask(int id, String description, String status) throws FileNotFoundException, IOException {
+        logger.info("updateTask() executing...");
+
+        String content = fileHandler.readContent();
+        logger.info("Returned to updateTask() from readContent()...");
+        logger.info("Content: " + content);
+
+        if (content.isEmpty()) {
+            System.out.println("No tasks found.");
+        } else {
+            List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
+            logger.info("Returned to updateTask() from convertJSONArrayToMaps()...");
+            logger.info("List of task maps: " + listOfTaskMaps);
+
+            boolean taskFound = false;
+            for (Map<String, String> taskMap : listOfTaskMaps) {
+                if (Integer.parseInt(taskMap.get("id")) == id) {
+                    taskFound = true;
+                    if (taskFound) {
+                        logger.info("TaskMap: " + taskMap);
+                    }
+
+                    if (!description.isEmpty()) {
+                        taskMap.put("description", description);
+                    }
+
+                    if (!status.isEmpty()) {
+                        taskMap.put("status", status.toLowerCase());
+                    }
+
+                    taskMap.put("updatedAt", LocalDateTime.now().toString());
+
+                    logger.info("TaskMap after updating: " + taskMap);
+                    break;
+                }
+            }
+
+            if (taskFound) {
+                fileHandler.writeContent(fileParser.convertMapsToJSONArray(listOfTaskMaps));
+                logger.info("Returned to updateTask() from writeContent()...");
+                System.out.println("Task with ID " + id + " updated successfully.");
+            } else {
+                System.out.println("Task with ID " + id + " not found.");
+            }
+        }
     }
 
     public void deleteTask(int id) throws FileNotFoundException, IOException {
