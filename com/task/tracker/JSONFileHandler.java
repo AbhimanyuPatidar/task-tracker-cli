@@ -84,12 +84,14 @@ public class JSONFileHandler {
             FileWriter writer = new FileWriter(filePath);
             logger.info("Deleting square brackets.");
             writer.write("");
+            writer.flush();
             writer.close();
             System.out.println("No tasks remaining!");
         } else {
             FileWriter writer = new FileWriter(filePath);
             logger.info("Writing content");
             writer.write(content);
+            writer.flush();
             writer.close();
             System.out.println("Content updated in file.");
         }

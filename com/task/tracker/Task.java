@@ -2,36 +2,37 @@
 
 package com.task.tracker;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.LocalDateTime;
-
-enum Status {
-    PENDING, IN_PROGRESS, COMPLETED
-}
+import java.util.Scanner;
 
 public class Task {
-    private static int id = 0;
+    private int id;
+    private File nextIdFile = new File("data/NextIdFile.txt");
     private String description;
-    private Status status;
+    private String status;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     
-    public Task(String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        id++;
-        this.description = description;
+    public Task(String description, String status, LocalDateTime createdAt, LocalDateTime updatedAt) throws NumberFormatException, IOException {
+        Scanner scanner = new Scanner(nextIdFile);
+        this.id = Integer.parseInt(scanner.next());
+        scanner.close();
+
+        FileWriter fileWriter = new FileWriter(nextIdFile);
+        fileWriter.write(String.valueOf(this.id + 1));
+        fileWriter.flush();
+        fileWriter.close();
         
-        switch (status.toLowerCase()) {
-            case "pending":
-                this.status = Status.PENDING;
-                break;
-            case "in_progress":
-                this.status = Status.IN_PROGRESS;
-                break;
-            case "completed":
-                this.status = Status.COMPLETED;
-                break;
-            default:
-                this.status = Status.PENDING;
-                break;
+        this.description = description;
+
+        if (status.equalsIgnoreCase("todo") || status.equalsIgnoreCase("in-progress") || status.equalsIgnoreCase("done")) {
+            this.status = status.toLowerCase();
+        } else {
+            System.out.println("Invalid status. Defaulting to 'done'.");
+            this.status = "done";
         }
 
         this.createdAt = createdAt;
@@ -51,24 +52,11 @@ public class Task {
     }
 
     public String getStatus() {
-        return status.toString();
+        return status;
     }
 
     public void setStatus(String status) {
-        switch (status) {
-            case "pending":
-                this.status = Status.PENDING;
-                break;
-            case "in_progress":
-                this.status = Status.IN_PROGRESS;
-                break;
-            case "completed":
-                this.status = Status.COMPLETED;
-                break;
-            default:
-                this.status = Status.PENDING;
-                break;
-        }
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

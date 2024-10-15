@@ -29,6 +29,7 @@ public class TaskService {
 
     // Will check for args and call the respective method
     public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException {
+        logger.info("Executing TaskService...");
         TaskManager taskManager = new TaskManager();
         
         if (!args[0].equalsIgnoreCase("add") && !args[0].equalsIgnoreCase("update") && !args[0].equalsIgnoreCase("delete") && !args[0].equalsIgnoreCase("list")) {
@@ -41,9 +42,11 @@ public class TaskService {
 
             if (args.length == 2) {
                 // Default status 'pending' applied
-                taskManager.addTask(description, "pending");
+                logger.info("Adding task with default status 'todo'...");
+                taskManager.addTask(description, "todo");
             } else if (args.length == 3) {
                 String status = args[2];
+                logger.info("Adding task with status '" + status + "'...");
                 taskManager.addTask(description, status);
             } else {
                 throw new InvNumOfArgsException("Invalid number of arguments provided for 'add' command.");

@@ -2,6 +2,7 @@
 
 package com.task.tracker;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -70,11 +71,9 @@ public class JSONFileParser {
         return jsonArray.toString();
     }
 
-    public String createContent(String description, String status) {
+    public String createContent(String description, String status, List<Map<String, String>> listOfTaskMaps) throws NumberFormatException, IOException {
         logger.info("Creating content...");
-
-        // Creating list of map instead of map to reuse convertMapsToJSONArray method
-        List<Map<String, String>> listOfTaskMaps = new ArrayList<>();
+        
         Map<String, String> taskMap = new HashMap<>();
 
         // Formatting Date and Time
@@ -86,13 +85,16 @@ public class JSONFileParser {
         // Adding task to map
         taskMap.put("id", String.valueOf(task.getId()));
         taskMap.put("description", task.getDescription());
-        taskMap.put("status", task.getStatus().toLowerCase());
+        taskMap.put("status", task.getStatus());
         taskMap.put("createdAt", task.getCreatedAt().format(formatter));
 
         if (task.getUpdatedAt() != null) {
-            taskMap.put("updatedAt", task.getUpdatedAt().toString());
+            taskMap.put("updatedAt", task.getUpdatedAt().format(formatter));
         }
 
+        if (listOfTaskMaps == null) {
+            listOfTaskMaps = new ArrayList<>();
+        }
         listOfTaskMaps.add(taskMap);
 
         // calling convertMapsToJSONArray to convert list of map to JSON Array (content)

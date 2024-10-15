@@ -2,7 +2,9 @@
 
 package com.task.tracker;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -26,7 +28,32 @@ public class TaskManager {
     public void addTask(String description, String string) throws IOException {
         logger.info("addTask() executing...");
 
-        fileHandler.writeContent(fileParser.createContent(description, string));
+        // Check if NextIdFile.txt exists
+        File nextIdFile = new File("data/NextIdFile.txt");
+        if (!nextIdFile.exists()) {
+            System.out.println("NextIdFile.txt not found. Creating new file at data/NextIdFile.txt ...");
+            if (nextIdFile.createNewFile()) {
+                System.out.println("NextIdFile.txt created.");
+                
+                FileWriter fileWriter = new FileWriter(nextIdFile);
+                fileWriter.write("1");
+                fileWriter.flush();
+                fileWriter.close();
+            } else {
+                throw new IOException("Failed to create NextIdFile.txt file.");
+            }
+        } else {
+            logger.info("NextIdFile.txt already exists.");
+        }
+
+        String content = fileHandler.readContent();
+        logger.info("Returned to addTask() from readContent()...");
+        List<Map<String, String>> listOfTaskMaps = null;
+        if (!content.isEmpty()) {
+            logger.info("Content is not empty");
+            listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
+        }
+        fileHandler.writeContent(fileParser.createContent(description, string, listOfTaskMaps));
     }
 
     public void updateTask(int id, String description, String status) throws FileNotFoundException, IOException {
@@ -51,11 +78,11 @@ public class TaskManager {
                         logger.info("TaskMap: " + taskMap);
                     }
 
-                    if (!description.isEmpty()) {
+                    if (description != null) {
                         taskMap.put("description", description);
                     }
 
-                    if (!status.isEmpty()) {
+                    if (status != null) {
                         taskMap.put("status", status.toLowerCase());
                     }
 
