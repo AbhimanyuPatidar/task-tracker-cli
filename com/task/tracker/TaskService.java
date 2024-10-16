@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.task.tracker.exceptions.InvCmdPassedException;
+import com.task.tracker.exceptions.InvIdFormatException;
 import com.task.tracker.exceptions.InvNumOfArgsException;
 import com.task.tracker.exceptions.InvUseOfOptionException;
 import java.util.logging.Logger;
@@ -28,7 +29,7 @@ public class TaskService {
     }
 
     // Will check for args and call the respective method
-    public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException {
+    public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException, InvIdFormatException {
         logger.info("Executing TaskService...");
         TaskManager taskManager = new TaskManager();
         
@@ -59,7 +60,12 @@ public class TaskService {
 
         // For 'update' command
         if (args[0].equalsIgnoreCase("update") && args.length == 4) {
-            Integer id = Integer.parseInt(args[1]);
+            Integer id;
+            try {
+                id = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                throw new InvIdFormatException("Invalid ID provided. ID should be a number.");
+            }
 
             if (args[2].charAt(0) == '-') {
                 if (args[2].charAt(1) == 'd' || args[2].charAt(1) == 'D') {
@@ -88,7 +94,13 @@ public class TaskService {
 
         // For 'delete' command
         if (args[0].equalsIgnoreCase("delete") && args.length == 2) {
-            Integer id = Integer.parseInt(args[1]);
+            Integer id;
+            try {
+                id = Integer.parseInt(args[1]);
+            } catch (NumberFormatException e) {
+                throw new InvIdFormatException("Invalid ID provided. ID should be a number.");
+            }
+            
             taskManager.deleteTask(id);
         } 
         

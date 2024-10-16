@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.task.tracker.TaskService;
 import com.task.tracker.exceptions.InvCmdPassedException;
+import com.task.tracker.exceptions.InvIdFormatException;
 import com.task.tracker.exceptions.InvNumOfArgsException;
 import com.task.tracker.exceptions.InvUseOfOptionException;
 
@@ -34,7 +35,7 @@ public class Main {
 
             try {
                 taskService.execute(args);
-            } catch (InvNumOfArgsException | InvUseOfOptionException | InvCmdPassedException | IOException e) {
+            } catch (InvNumOfArgsException | InvUseOfOptionException | InvCmdPassedException | InvIdFormatException | IOException e) {
                 System.out.println(e.getMessage());
             } catch (Exception e) {
                 e.printStackTrace();
