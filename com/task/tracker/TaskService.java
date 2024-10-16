@@ -42,7 +42,7 @@ public class TaskService {
             String description = args[1];
 
             if (args.length == 2) {
-                // Default status 'pending' applied
+                // Default status 'todo' applied
                 logger.info("Adding task with default status 'todo'...");
                 taskManager.addTask(description, "todo");
             } else if (args.length == 3) {
@@ -68,6 +68,10 @@ public class TaskService {
             }
 
             if (args[2].charAt(0) == '-') {
+                if (args[2].length() == 1) {
+                    throw new InvUseOfOptionException("Invalid use of '-' in 'update' command. There is no option provided after '-'.");
+                }
+
                 if (args[2].charAt(1) == 'd' || args[2].charAt(1) == 'D') {
                     // Updating description
                     String newDescription = args[3];
@@ -100,7 +104,7 @@ public class TaskService {
             } catch (NumberFormatException e) {
                 throw new InvIdFormatException("Invalid ID provided. ID should be a number.");
             }
-            
+
             taskManager.deleteTask(id);
         } 
         
@@ -113,6 +117,12 @@ public class TaskService {
             taskManager.listTasks();
         } else if (args[0].equalsIgnoreCase("list") && args.length == 2) {
             String status = args[1];
+            if (!status.equalsIgnoreCase("todo") && !status.equalsIgnoreCase("in-progress") && !status.equalsIgnoreCase("done")) {
+                System.out.println("Invalid status provided. Printing all tasks.");
+                taskManager.listTasks();
+                return;
+            }
+
             taskManager.listTasksByStatus(status);
         } 
         

@@ -19,7 +19,7 @@ public class Main {
             System.out.println("Various options available:");
             
             System.out.println("1. To add a new task: java -cp . Main add <description> <status>");
-            System.out.println("\tStatus can be one of: pending(default), in_progress, completed");
+            System.out.println("\tStatus can be one of: todo(default), in-progress, done");
 
             System.out.println("2. To update a task: ");
             System.out.println("\tTo update description: java -cp . Main update <id> -d <new_description>");

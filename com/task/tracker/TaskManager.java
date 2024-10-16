@@ -25,7 +25,7 @@ public class TaskManager {
         fileParser = new JSONFileParser();
     }
 
-    public void addTask(String description, String string) throws IOException {
+    public void addTask(String description, String status) throws IOException {
         logger.info("addTask() executing...");
 
         // Check if NextIdFile.txt exists
@@ -53,7 +53,7 @@ public class TaskManager {
             logger.info("Content is not empty");
             listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
         }
-        fileHandler.writeContent(fileParser.createContent(description, string, listOfTaskMaps));
+        fileHandler.writeContent(fileParser.createContent(description, status, listOfTaskMaps));
     }
 
     public void updateTask(int id, String description, String status) throws FileNotFoundException, IOException {
@@ -261,12 +261,12 @@ public class TaskManager {
                 hour = Integer.toString(hourInt);
             }
 
-            dateTime = "Date: " + day + " " + month + ", " + year + "; Time: " + hour + ":" + minutes + ":" + seconds + " am";
+            dateTime = "Date:- " + day + " " + month + ", " + year + "; Time:- " + hour + ":" + minutes + ":" + seconds + " am";
         } else {
             hourInt -= 12;
             String hour = Integer.toString(hourInt);
 
-            dateTime = "Date: " + day + " " + month + ", " + year + "; Time: " + hour + ":" + minutes + ":" + seconds + " pm";
+            dateTime = "Date:- " + day + " " + month + ", " + year + "; Time:- " + hour + ":" + minutes + ":" + seconds + " pm";
         }
 
         return dateTime;

@@ -31,8 +31,8 @@ public class Task {
         if (status.equalsIgnoreCase("todo") || status.equalsIgnoreCase("in-progress") || status.equalsIgnoreCase("done")) {
             this.status = status.toLowerCase();
         } else {
-            System.out.println("Invalid status. Defaulting to 'done'.");
-            this.status = "done";
+            System.out.println("Invalid status. Defaulting to 'todo'.");
+            this.status = "todo";
         }
 
         this.createdAt = createdAt;
