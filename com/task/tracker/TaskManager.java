@@ -1,4 +1,11 @@
-// Purpose: TaskManager class to manage tasks.
+/**
+ * Class that manages the tasks by adding, updating, deleting, listing and listing tasks by status.
+ * 
+ * @param JSONFileHandler
+ * @param JSONFileParser
+ * 
+ * @Author: Abhimnanyu Patidar
+ */
 
 package com.task.tracker;
 
@@ -19,12 +26,28 @@ public class TaskManager {
     JSONFileHandler fileHandler = null;
     JSONFileParser fileParser = null;
 
+    /**
+     * Constructor to initialize the TaskManager.
+     * Initializes the JSONFileHandler and JSONFileParser.
+     * 
+     * @throws IOException
+     * 
+     */
     public TaskManager() throws IOException {
         logger.info("TaskManager initialized...");
         fileHandler = new JSONFileHandler();
         fileParser = new JSONFileParser();
     }
 
+    /**
+     * Adds a task with the given description and status.
+     * 
+     * @param description description of the task
+     * @param status status of the task
+     * 
+     * @throws IOException
+     * 
+    */
     public void addTask(String description, String status) throws IOException {
         logger.info("addTask() executing...");
 
@@ -46,16 +69,32 @@ public class TaskManager {
             logger.info("NextIdFile.txt already exists.");
         }
 
+        // Read the content of Tasks.json file
         String content = fileHandler.readContent();
         logger.info("Returned to addTask() from readContent()...");
         List<Map<String, String>> listOfTaskMaps = null;
         if (!content.isEmpty()) {
             logger.info("Content is not empty");
+            
+            // Convert the content to List of Maps
             listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
         }
+
+        // Create json array from the list of task maps and write it to Tasks.json file
         fileHandler.writeContent(fileParser.createContent(description, status, listOfTaskMaps));
     }
 
+    /**
+     * Updates the task with the given ID with the new description and/or status.
+     * 
+     * @param id unique identifier of the task
+     * @param description description of the task
+     * @param status status of the task
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+    */
     public void updateTask(int id, String description, String status) throws FileNotFoundException, IOException {
         logger.info("updateTask() executing...");
 
@@ -70,6 +109,11 @@ public class TaskManager {
             logger.info("Returned to updateTask() from convertJSONArrayToMaps()...");
             logger.info("List of task maps: " + listOfTaskMaps);
 
+            /*
+             * Check if the task with the given ID exists.
+             * If it exists, update the description and/or status.
+             * Add the updatedAt timestamp.
+             */
             boolean taskFound = false;
             for (Map<String, String> taskMap : listOfTaskMaps) {
                 if (Integer.parseInt(taskMap.get("id")) == id) {
@@ -98,6 +142,7 @@ public class TaskManager {
             }
 
             if (taskFound) {
+                // Convert the list of task maps to JSON array and write it to Tasks.json file
                 fileHandler.writeContent(fileParser.convertMapsToJSONArray(listOfTaskMaps));
                 logger.info("Returned to updateTask() from writeContent()...");
                 System.out.println("Task with ID " + id + " updated successfully.");
@@ -107,6 +152,15 @@ public class TaskManager {
         }
     }
 
+    /**
+     * Deletes the task with the given ID.
+     * 
+     * @param id unique identifier of the task
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     */
     public void deleteTask(int id) throws FileNotFoundException, IOException {
         logger.info("deleteTask() executing...");
 
@@ -145,6 +199,13 @@ public class TaskManager {
         }
     }
 
+    /**
+     * Lists all the tasks.
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     */
     public void listTasks() throws FileNotFoundException, IOException {
         logger.info("listTasks() executing...");
 
@@ -163,6 +224,15 @@ public class TaskManager {
         }
     }
 
+    /**
+     * Lists the tasks with the given status.
+     * 
+     * @param status status of the tasks
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     */
     public void listTasksByStatus(String status) throws FileNotFoundException, IOException {
         logger.info("listTasksByStatus() executing...");
 
@@ -181,11 +251,18 @@ public class TaskManager {
         }
     }
 
+    /**
+     * Prints all the tasks.
+     * 
+     * @param listOfTaskMaps list of task maps containing the key-value pairs from the JSON array.
+     * 
+     */
     private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
         logger.info("Printing all tasks...");
         System.out.println("Here are all the tasks:");
         System.out.println();
 
+        // Extract the task details from the list of task maps
         for (Map<String, String> taskMap : listOfTaskMaps) {
             System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
             System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
@@ -207,12 +284,21 @@ public class TaskManager {
         System.out.println("End of tasks.");
     }
 
+    /**
+     * Prints the tasks with the given status.
+     * 
+     * @param listOfTaskMaps list of task maps containing the key-value pairs from the JSON array.
+     * @param status status of the tasks
+     * 
+     */
     private void printTasksByStatus(List<Map<String, String>> listOfTaskMaps, String status) {
         logger.info("Printing tasks by status...");
         System.out.println("Here are all the tasks with status: " + status);
         System.out.println();
 
+        // Extract the task details from the list of task maps
         for (Map<String, String> taskMap : listOfTaskMaps) {
+            // Check if the status of the task is the same as the given status
             if (taskMap.get("status").equalsIgnoreCase(status)) {
                 System.out.println("Task ID: " + '\"' + taskMap.get("id") + '\"');
                 System.out.println("Description: " + '\"' + taskMap.get("description") + '\"');
@@ -235,6 +321,14 @@ public class TaskManager {
         System.out.println("End of tasks with status: " + status);
     }
 
+    /**
+     * Formats the date and time.
+     * 
+     * @param dateTime date and time
+     * 
+     * @return formatted date and time
+     * 
+     */
     private String format(String dateTime) {
         logger.info("Formatting date and time...");
         String[] dateTimeArray = dateTime.split("_");

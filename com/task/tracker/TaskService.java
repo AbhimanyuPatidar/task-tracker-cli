@@ -1,4 +1,8 @@
-// Purpose: This class will check for the arguments provided and call the respective method to add, update, delete or list tasks.
+/**
+ * Class to process the command line arguments and calls the respective methods.
+ * 
+ * @author: Abhimanyu Patidar
+*/
 
 package com.task.tracker;
 
@@ -14,25 +18,30 @@ import java.util.logging.Logger;
 public class TaskService {
     private static final Logger logger = Logger.getLogger(TaskService.class.getName());
 
-    private String[] args;
-
     public TaskService() {
         logger.info("TaskService initialized...");
     }
 
-    public String[] getArgs() {
-        return args;
-    }
-
-    public void setArgs(String[] args) {
-        this.args = args;
-    }
-
-    // Will check for args and call the respective method
+    /**
+     * Executes the task manager methods based on the command line arguments.
+     * 
+     * @param args the command line arguments
+     * 
+     * @throws InvNumOfArgsException if the number of arguments provided is invalid
+     * @throws InvUseOfOptionException if the option provided is invalids
+     * @throws InvCmdPassedException if the command passed is invalid
+     * @throws FileNotFoundException if the file is not found
+     * @throws IOException if an I/O error occurs
+     * @throws InvIdFormatException if the ID provided is invalid
+     * 
+     * @return void
+     * 
+    */
     public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException, InvIdFormatException {
         logger.info("Executing TaskService...");
         TaskManager taskManager = new TaskManager();
         
+        // To check if 'add', 'update', 'delete' or 'list' command is not provided
         if (!args[0].equalsIgnoreCase("add") && !args[0].equalsIgnoreCase("update") && !args[0].equalsIgnoreCase("delete") && !args[0].equalsIgnoreCase("list")) {
             throw new InvCmdPassedException("Invalid command provided. Please provide a valid command.");
         }

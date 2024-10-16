@@ -1,4 +1,12 @@
-// Purpose: Handles the creation and management of the Tasks.json file.
+/**
+ * JSONFileHandler class is responsible for creating the data directory and Tasks.json file if they don't exist.
+ * It also reads the entire file content and writes content to the file.
+ * The JSONFileHandler class is used by the TaskManager class to read and write tasks to the Tasks.json file.
+ * 
+ * @param filePath: The path to the Tasks.json file.
+ * 
+ * @Author: Abhimanyu Patidar
+ */
 
 package com.task.tracker;
 
@@ -12,8 +20,18 @@ import java.util.logging.Logger;
 public class JSONFileHandler {
     private static final Logger logger = Logger.getLogger(JSONFileHandler.class.getName());
     
+    /**
+     * The path to the Tasks.json file.
+     */
     private String filePath = "data/Tasks.json";
 
+    /**
+     * Constructor to initialize the JSONFileHandler class.
+     * It creates the data directory and Tasks.json file if they don't exist.
+     * 
+     * @throws IOException
+     * 
+     */
     public JSONFileHandler() throws IOException {
         logger.info("JSONFileHandler initialized...");
 
@@ -52,7 +70,15 @@ public class JSONFileHandler {
         this.filePath = filePath;
     }
 
-    // Reads the entire file for listTasks(), listTasksByStatus(), deleteTask() methods
+    /**
+     * Reads the entire file content and returns it as a string.
+     * 
+     * @return The entire file content as a string.
+     * 
+     * @throws FileNotFoundException
+     * @throws IOException
+     * 
+     */
     public String readContent() throws FileNotFoundException, IOException {
         logger.info("Reading entire file...");
         
@@ -72,7 +98,14 @@ public class JSONFileHandler {
         return content.toString();
     }
 
-    // Writes string into the file for deleteTask() method
+    /**
+     * Writes the content to the file.
+     * 
+     * @param content The content to write to the file.
+     * 
+     * @throws IOException
+     * 
+     */
     public void writeContent(String content) throws IOException {
         logger.info("Writing content to file...");
         logger.info("Content: " + content);
