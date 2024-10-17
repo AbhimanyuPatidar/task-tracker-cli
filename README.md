@@ -58,16 +58,3 @@ java -cp class Main list
 5. Listing tasks according to status
 java -cp class Main list "done"
 ```
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request.
-Or create your own project using instructions at https://roadmap.sh/projects/task-tracker
-
-## License
-
-This project is licensed under the MIT License.
-
-## Contact
-
-For any questions or suggestions, please open an issue or contact abhimanyupatidar2511@gmail.com
