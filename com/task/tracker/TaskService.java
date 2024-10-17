@@ -13,13 +13,13 @@ import com.task.tracker.exceptions.InvCmdPassedException;
 import com.task.tracker.exceptions.InvIdFormatException;
 import com.task.tracker.exceptions.InvNumOfArgsException;
 import com.task.tracker.exceptions.InvUseOfOptionException;
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 
 public class TaskService {
-    private static final Logger logger = Logger.getLogger(TaskService.class.getName());
+    // private static final Logger logger = Logger.getLogger(TaskService.class.getName());
 
     public TaskService() {
-        logger.info("TaskService initialized...");
+        // logger.info("TaskService initialized...");
     }
 
     /**
@@ -38,7 +38,7 @@ public class TaskService {
      * 
     */
     public void execute(String[] args) throws InvNumOfArgsException, InvUseOfOptionException, InvCmdPassedException, FileNotFoundException, IOException, InvIdFormatException {
-        logger.info("Executing TaskService...");
+        // logger.info("Executing TaskService...");
         TaskManager taskManager = new TaskManager();
         
         // To check if 'add', 'update', 'delete' or 'list' command is not provided
@@ -52,11 +52,11 @@ public class TaskService {
 
             if (args.length == 2) {
                 // Default status 'todo' applied
-                logger.info("Adding task with default status 'todo'...");
+                // logger.info("Adding task with default status 'todo'...");
                 taskManager.addTask(description, "todo");
             } else if (args.length == 3) {
                 String status = args[2];
-                logger.info("Adding task with status '" + status + "'...");
+                // logger.info("Adding task with status '" + status + "'...");
                 taskManager.addTask(description, status);
             } else {
                 throw new InvNumOfArgsException("Invalid number of arguments provided for 'add' command.");

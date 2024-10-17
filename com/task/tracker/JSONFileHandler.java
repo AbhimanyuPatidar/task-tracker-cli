@@ -15,10 +15,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 
 public class JSONFileHandler {
-    private static final Logger logger = Logger.getLogger(JSONFileHandler.class.getName());
+    // private static final Logger logger = Logger.getLogger(JSONFileHandler.class.getName());
     
     /**
      * The path to the Tasks.json file.
@@ -33,7 +33,7 @@ public class JSONFileHandler {
      * 
      */
     public JSONFileHandler() throws IOException {
-        logger.info("JSONFileHandler initialized...");
+        // logger.info("JSONFileHandler initialized...");
 
         // Create the data directory if it doesn't exist
         File dataDir = new File("data");
@@ -44,7 +44,7 @@ public class JSONFileHandler {
                 System.err.println("Failed to create data directory.");
             }
         } else {
-            logger.info("Data directory already exists.");
+            // logger.info("Data directory already exists.");
         }
 
         // Check if the Tasks.json file exists
@@ -58,7 +58,7 @@ public class JSONFileHandler {
                 throw new IOException("Failed to create Tasks.json file.");
             }
         } else {
-            logger.info("Tasks.json file already exists.");
+            // logger.info("Tasks.json file already exists.");
         }
     }
 
@@ -80,7 +80,7 @@ public class JSONFileHandler {
      * 
      */
     public String readContent() throws FileNotFoundException, IOException {
-        logger.info("Reading entire file...");
+        // logger.info("Reading entire file...");
         
         StringBuilder content = new StringBuilder();
 
@@ -93,7 +93,7 @@ public class JSONFileHandler {
 
         reader.close();
 
-        logger.info("Content: " + content.toString());
+        // logger.info("Content: " + content.toString());
 
         return content.toString();
     }
@@ -107,22 +107,22 @@ public class JSONFileHandler {
      * 
      */
     public void writeContent(String content) throws IOException {
-        logger.info("Writing content to file...");
-        logger.info("Content: " + content);
+        // logger.info("Writing content to file...");
+        // logger.info("Content: " + content);
 
         if (content.length() == 0) {
             System.out.println("No tasks to write.");
             return;
         } else if (content.length() == 2 && (content.charAt(0) == '[' && content.charAt(1) == ']')) {
             FileWriter writer = new FileWriter(filePath);
-            logger.info("Deleting square brackets.");
+            // logger.info("Deleting square brackets.");
             writer.write("");
             writer.flush();
             writer.close();
             System.out.println("No tasks remaining!");
         } else {
             FileWriter writer = new FileWriter(filePath);
-            logger.info("Writing content");
+            // logger.info("Writing content");
             writer.write(content);
             writer.flush();
             writer.close();

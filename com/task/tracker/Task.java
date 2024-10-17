@@ -56,10 +56,10 @@ public class Task {
      * Status is only valid if it is 'todo', 'in-progress' or 'done'.
      * Default status is 'todo' if the given status is invalid.
      * 
-     * @param description
-     * @param status
-     * @param createdAt
-     * @param updatedAt
+     * @param description the description of the task
+     * @param status the status of the task
+     * @param createdAt the creation timestamp of the task
+     * @param updatedAt the update timestamp of the task
      * 
      * @throws NumberFormatException
      * @throws IOException

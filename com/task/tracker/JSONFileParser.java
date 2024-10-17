@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 
 public class JSONFileParser {
-    private static final Logger logger = Logger.getLogger(JSONFileParser.class.getName());
+    // private static final Logger logger = Logger.getLogger(JSONFileParser.class.getName());
 
     public JSONFileParser() {
-        logger.info("JSONFileParser initialized...");
+        // logger.info("JSONFileParser initialized...");
     }
 
     /**
@@ -31,12 +31,12 @@ public class JSONFileParser {
      * 
      */
     public List<Map<String, String>> convertJSONArrayToMaps(String content) {
-        logger.info("Converting JSON Array to maps...");
+        // logger.info("Converting JSON Array to maps...");
 
         // Refine the content by removing unwanted characters
         content = refineContent(content);
 
-        logger.info("Refined content: " + content);
+        // logger.info("Refined content: " + content);
 
         // Split the JSON array into individual JSON objects and simultaneously convert them to maps
         List<Map<String, String>> listOfTaskMaps = splitIntoJSONObjects(content);
@@ -53,7 +53,7 @@ public class JSONFileParser {
      * 
      */
     public String convertMapsToJSONArray(List<Map<String, String>> listOfTaskMaps) {
-        logger.info("Converting maps to JSON Array...");
+        // logger.info("Converting maps to JSON Array...");
 
         StringBuilder jsonArray = new StringBuilder();
         jsonArray.append("[");
@@ -78,7 +78,7 @@ public class JSONFileParser {
         jsonArray.deleteCharAt(jsonArray.length() - 1); // Remove the last comma
         jsonArray.append("]");
 
-        logger.info("JSON Array: " + jsonArray);
+        // logger.info("JSON Array: " + jsonArray);
 
         return jsonArray.toString();
     }
@@ -97,7 +97,7 @@ public class JSONFileParser {
      * 
      */
     public String createContent(String description, String status, List<Map<String, String>> listOfTaskMaps) throws NumberFormatException, IOException {
-        logger.info("Creating content...");
+        // logger.info("Creating content...");
         
         Map<String, String> taskMap = new HashMap<>();
 
@@ -138,7 +138,7 @@ public class JSONFileParser {
      * 
      */
     private List<Map<String, String>> splitIntoJSONObjects(String content) {
-        logger.info("Splitting into JSON objects...");
+        // logger.info("Splitting into JSON objects...");
 
         List<Map<String, String>> listOfTaskMaps = new ArrayList<>();
 
@@ -164,10 +164,10 @@ public class JSONFileParser {
              * Convert the JSON object to a map and add it to the list.
              */
             if (braceCount == 0 && jsonObject.length() > 0) {
-                logger.info("JSON Object: " + jsonObject);
-                logger.info("JSON Object: " + jsonObject.toString().trim());
+                // logger.info("JSON Object: " + jsonObject);
+                // logger.info("JSON Object: " + jsonObject.toString().trim());
                 Map<String, String> task = convertJSONObjectToMap(jsonObject.toString().trim());
-                logger.info("Task: " + task);
+                // logger.info("Task: " + task);
                 listOfTaskMaps.add(task);
                 jsonObject.setLength(0);
             }
@@ -185,7 +185,7 @@ public class JSONFileParser {
      * 
      */
     private Map<String, String> convertJSONObjectToMap(String jsonObject) {
-        logger.info("Converting JSON object to map...");
+        // logger.info("Converting JSON object to map...");
 
         Map<String, String> task = new HashMap<>();
 
@@ -202,17 +202,17 @@ public class JSONFileParser {
             String[] keyValue = pair.split(":");
 
             if (keyValue.length < 2) {
-                logger.warning("Skipping invalid key-value pair: " + pair);
+                // logger.warning("Skipping invalid key-value pair: " + pair);
                 continue;
             }
             
             String key = keyValue[0].trim();
             String value = keyValue[1].trim();
 
-            logger.info("Key: " + key + ", Value: " + value);
+            // logger.info("Key: " + key + ", Value: " + value);
 
             // Modify key and value so they don't contain quotes, if present and add to map
-            logger.info("Removing quotes from key and value, if present...");
+            // logger.info("Removing quotes from key and value, if present...");
             if (key.startsWith("\"")) {
                 key = key.substring(1, key.length());
             }
@@ -229,12 +229,12 @@ public class JSONFileParser {
                 value = value.substring(0, value.length() -1);
             }
 
-            logger.info("Key: " + key + ", Value: " + value);
+            // logger.info("Key: " + key + ", Value: " + value);
 
             task.put(key, value);
         }
 
-        logger.info("Task map: " + task);
+        // logger.info("Task map: " + task);
 
         return task;
     }
@@ -248,21 +248,21 @@ public class JSONFileParser {
      * 
      */
     private String refineContent(String content) {
-        logger.info("Refining content...");
+        // logger.info("Refining content...");
 
         // Remove the outer square brackets
         if (content.startsWith("[") && content.endsWith("]")) {
             content = content.substring(1, content.length() - 1);
         }
 
-        logger.info("Content after removing square brackets: " + content);
+        // logger.info("Content after removing square brackets: " + content);
 
         // Remove anything outside the curly braces
         int start = content.indexOf("{");
         int end = content.lastIndexOf("}");
         content = content.substring(start, end + 1);
 
-        logger.info("Content after removing anything outside curly braces: " + content);
+        // logger.info("Content after removing anything outside curly braces: " + content);
 
         StringBuilder refinedContent = new StringBuilder();
         boolean isAppend = false;

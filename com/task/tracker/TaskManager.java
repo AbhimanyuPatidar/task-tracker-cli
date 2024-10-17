@@ -18,10 +18,10 @@ import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+// import java.util.logging.Logger;
 
 public class TaskManager {
-    private static final Logger logger = Logger.getLogger(TaskManager.class.getName());
+    // private static final Logger logger = Logger.getLogger(TaskManager.class.getName());
 
     JSONFileHandler fileHandler = null;
     JSONFileParser fileParser = null;
@@ -34,7 +34,7 @@ public class TaskManager {
      * 
      */
     public TaskManager() throws IOException {
-        logger.info("TaskManager initialized...");
+        // logger.info("TaskManager initialized...");
         fileHandler = new JSONFileHandler();
         fileParser = new JSONFileParser();
     }
@@ -49,7 +49,7 @@ public class TaskManager {
      * 
     */
     public void addTask(String description, String status) throws IOException {
-        logger.info("addTask() executing...");
+        // logger.info("addTask() executing...");
 
         // Check if NextIdFile.txt exists
         File nextIdFile = new File("data/NextIdFile.txt");
@@ -66,15 +66,15 @@ public class TaskManager {
                 throw new IOException("Failed to create NextIdFile.txt file.");
             }
         } else {
-            logger.info("NextIdFile.txt already exists.");
+            // logger.info("NextIdFile.txt already exists.");
         }
 
         // Read the content of Tasks.json file
         String content = fileHandler.readContent();
-        logger.info("Returned to addTask() from readContent()...");
+        // logger.info("Returned to addTask() from readContent()...");
         List<Map<String, String>> listOfTaskMaps = null;
         if (!content.isEmpty()) {
-            logger.info("Content is not empty");
+            // logger.info("Content is not empty");
             
             // Convert the content to List of Maps
             listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
@@ -96,18 +96,18 @@ public class TaskManager {
      * 
     */
     public void updateTask(int id, String description, String status) throws FileNotFoundException, IOException {
-        logger.info("updateTask() executing...");
+        // logger.info("updateTask() executing...");
 
         String content = fileHandler.readContent();
-        logger.info("Returned to updateTask() from readContent()...");
-        logger.info("Content: " + content);
+        // logger.info("Returned to updateTask() from readContent()...");
+        // logger.info("Content: " + content);
 
         if (content.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
             List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
-            logger.info("Returned to updateTask() from convertJSONArrayToMaps()...");
-            logger.info("List of task maps: " + listOfTaskMaps);
+            // logger.info("Returned to updateTask() from convertJSONArrayToMaps()...");
+            // logger.info("List of task maps: " + listOfTaskMaps);
 
             /*
              * Check if the task with the given ID exists.
@@ -119,7 +119,7 @@ public class TaskManager {
                 if (Integer.parseInt(taskMap.get("id")) == id) {
                     taskFound = true;
                     if (taskFound) {
-                        logger.info("TaskMap: " + taskMap);
+                        // logger.info("TaskMap: " + taskMap);
                     }
 
                     if (description != null) {
@@ -136,7 +136,7 @@ public class TaskManager {
 
                     taskMap.put("updatedAt", updatedAt);
 
-                    logger.info("TaskMap after updating: " + taskMap);
+                    // logger.info("TaskMap after updating: " + taskMap);
                     break;
                 }
             }
@@ -144,7 +144,7 @@ public class TaskManager {
             if (taskFound) {
                 // Convert the list of task maps to JSON array and write it to Tasks.json file
                 fileHandler.writeContent(fileParser.convertMapsToJSONArray(listOfTaskMaps));
-                logger.info("Returned to updateTask() from writeContent()...");
+                // logger.info("Returned to updateTask() from writeContent()...");
                 System.out.println("Task with ID " + id + " updated successfully.");
             } else {
                 System.out.println("Task with ID " + id + " not found.");
@@ -162,36 +162,36 @@ public class TaskManager {
      * 
      */
     public void deleteTask(int id) throws FileNotFoundException, IOException {
-        logger.info("deleteTask() executing...");
+        // logger.info("deleteTask() executing...");
 
         String content = fileHandler.readContent();
-        logger.info("Returned to deleteTask() from readContent()...");
-        logger.info("Content: " + content);
+        // logger.info("Returned to deleteTask() from readContent()...");
+        // logger.info("Content: " + content);
 
         if (content.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
             List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
-            logger.info("Returned to deleteTask() from convertJSONArrayToMaps()...");
-            logger.info("List of task maps: " + listOfTaskMaps);
+            // logger.info("Returned to deleteTask() from convertJSONArrayToMaps()...");
+            // logger.info("List of task maps: " + listOfTaskMaps);
 
             boolean taskFound = false;
             for (Map<String, String> taskMap : listOfTaskMaps) {
                 if (Integer.parseInt(taskMap.get("id")) == id) {
                     taskFound = true;
                     if (taskFound) {
-                        logger.info("TaskMap: " + taskMap);
+                        // logger.info("TaskMap: " + taskMap);
                     }
 
                     listOfTaskMaps.remove(taskMap);
-                    logger.info("List of task maps after deleting task: " + listOfTaskMaps);
+                    // logger.info("List of task maps after deleting task: " + listOfTaskMaps);
                     break;
                 }
             }
 
             if (taskFound) {
                 fileHandler.writeContent(fileParser.convertMapsToJSONArray(listOfTaskMaps));
-                logger.info("Returned to deleteTask() from writeContent()...");
+                // logger.info("Returned to deleteTask() from writeContent()...");
                 System.out.println("Task with ID " + id + " deleted successfully.");
             } else {
                 System.out.println("Task with ID " + id + " not found.");
@@ -207,18 +207,18 @@ public class TaskManager {
      * 
      */
     public void listTasks() throws FileNotFoundException, IOException {
-        logger.info("listTasks() executing...");
+        // logger.info("listTasks() executing...");
 
         String content = fileHandler.readContent();
-        logger.info("Returned to listTasks() from readContent()...");
-        logger.info("Content: " + content);
+        // logger.info("Returned to listTasks() from readContent()...");
+        // logger.info("Content: " + content);
         
         if (content.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
             List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
-            logger.info("Returned to listTasks() from convertJSONArrayToMaps()...");
-            logger.info("List of task maps: " + listOfTaskMaps);
+            // logger.info("Returned to listTasks() from convertJSONArrayToMaps()...");
+            // logger.info("List of task maps: " + listOfTaskMaps);
 
             printAllTasks(listOfTaskMaps);
         }
@@ -234,18 +234,18 @@ public class TaskManager {
      * 
      */
     public void listTasksByStatus(String status) throws FileNotFoundException, IOException {
-        logger.info("listTasksByStatus() executing...");
+        // logger.info("listTasksByStatus() executing...");
 
         String content = fileHandler.readContent();
-        logger.info("Returned to listTasksByStatus() from readContent()...");
-        logger.info("Content: " + content);
+        // logger.info("Returned to listTasksByStatus() from readContent()...");
+        // logger.info("Content: " + content);
 
         if (content.isEmpty()) {
             System.out.println("No tasks found.");
         } else {
             List<Map<String, String>> listOfTaskMaps = fileParser.convertJSONArrayToMaps(content);
-            logger.info("Returned to listTasksByStatus() from convertJSONArrayToMaps()...");
-            logger.info("List of task maps: " + listOfTaskMaps);
+            // logger.info("Returned to listTasksByStatus() from convertJSONArrayToMaps()...");
+            // logger.info("List of task maps: " + listOfTaskMaps);
 
             printTasksByStatus(listOfTaskMaps, status);
         }
@@ -258,7 +258,7 @@ public class TaskManager {
      * 
      */
     private void printAllTasks(List<Map<String, String>> listOfTaskMaps) {
-        logger.info("Printing all tasks...");
+        // logger.info("Printing all tasks...");
         System.out.println("Here are all the tasks:");
         System.out.println();
 
@@ -275,7 +275,7 @@ public class TaskManager {
                 String updatedAt = format(taskMap.get("updatedAt"));
                 System.out.println("UpdatedAt: " + '\"' + updatedAt + '\"');
             } else {
-                logger.info("No updatedAt key found in taskMap.");
+                // logger.info("No updatedAt key found in taskMap.");
             }
 
             System.out.println();
@@ -292,7 +292,7 @@ public class TaskManager {
      * 
      */
     private void printTasksByStatus(List<Map<String, String>> listOfTaskMaps, String status) {
-        logger.info("Printing tasks by status...");
+        // logger.info("Printing tasks by status...");
         System.out.println("Here are all the tasks with status: " + status);
         System.out.println();
 
@@ -311,7 +311,7 @@ public class TaskManager {
                     String updatedAt = format(taskMap.get("updatedAt"));
                     System.out.println("UpdatedAt: " + '\"' + updatedAt + '\"');
                 } else {
-                    logger.info("No updatedAt key found in taskMap.");
+                    // logger.info("No updatedAt key found in taskMap.");
                 }
 
                 System.out.println();
@@ -326,11 +326,11 @@ public class TaskManager {
      * 
      * @param dateTime date and time
      * 
-     * @return formatted date and time
+     * @return formatted date and time as a string
      * 
      */
     private String format(String dateTime) {
-        logger.info("Formatting date and time...");
+        // logger.info("Formatting date and time...");
         String[] dateTimeArray = dateTime.split("_");
 
         String[] dateArray = dateTimeArray[0].split("-");
